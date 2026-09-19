@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SLT Gestão — o sistema da assistência técnica</title>
+<meta name="description" content="Ordens de serviço, clientes, produtos e dinheiro no lugar. Funciona sem internet, sincroniza com o celular e entende o que você dita. Feito por quem trabalha em assistência técnica.">
+
+<meta property="og:title" content="SLT Gestão — o sistema da assistência técnica">
+<meta property="og:description" content="Ordens de serviço, clientes e dinheiro no lugar. Funciona offline, sincroniza com o celular e entende o que você dita.">
+<meta property="og:type" content="website">
+
+<style>
+  :root {
+    --fundo: #0a0a0b;
+    --superficie: #17161a;
+    --superficie-alta: #201f24;
+    --borda: #2a282e;
+    --texto-forte: #f4f2f3;
+    --texto: #cbc7cc;
+    --texto-suave: #928d96;
+    --acento: #ff6b00;
+    --acento-suave: #2b1806;
+    --verde: #3fb950;
+    --whatsapp: #25a55a;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--fundo);
+    color: var(--texto);
+    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    line-height: 1.65;
+    font-size: 16px;
+  }
+
+  a { color: var(--acento); }
+
+  .faixa { max-width: 1060px; margin: 0 auto; padding: 0 20px; }
+
+  header {
+    border-bottom: 1px solid var(--borda);
+    background: #121113;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  header .faixa {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-top: 14px;
+    padding-bottom: 14px;
+    flex-wrap: wrap;
+  }
+  .marca { display: flex; align-items: center; gap: 11px; margin-right: auto; }
+  .selo {
+    width: 34px; height: 34px; border-radius: 9px;
+    background: var(--acento); color: #0a0a0b;
+    font-weight: 800; font-size: 18px;
+    display: grid; place-items: center;
+  }
+  .marca b { color: var(--texto-forte); font-size: 16px; letter-spacing: .2px; }
+  .marca b span { color: var(--acento); }
+  .marca small { display: block; color: var(--texto-suave); font-size: 11.5px; line-height: 1.2; }
+
+  .botao {
+    display: inline-block;
+    padding: 11px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14.5px;
+    text-decoration: none;
+    border: 1px solid transparent;
+    white-space: nowrap;
+  }
+  .botao-principal { background: var(--acento); color: #0a0a0b; }
+  .botao-zap { background: var(--whatsapp); color: #06120a; }
+  .botao-neutro { border-color: var(--borda); color: var(--texto); background: var(--superficie-alta); }
+
+  .heroi { padding: 72px 0 56px; }
+  .heroi h1 {
+    font-size: clamp(30px, 5.2vw, 50px);
+    line-height: 1.12;
+    margin: 0 0 18px;
+    color: var(--texto-forte);
+    letter-spacing: -.5px;
+  }
+  .heroi h1 span { color: var(--acento); }
+  .heroi p.linha {
+    font-size: clamp(16px, 2.2vw, 19px);
+    max-width: 660px;
+    margin: 0 0 14px;
+  }
+  .heroi p.miudo { color: var(--texto-suave); font-size: 14.5px; max-width: 620px; }
+  .acoes { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
+
+  .tira {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 14px;
+    margin: 44px 0 0;
+  }
+  .tira div {
+    background: var(--superficie);
+    border: 1px solid var(--borda);
+    border-radius: 10px;
+    padding: 16px 18px;
+  }
+  .tira b { display: block; color: var(--acento); font-size: 21px; }
+  .tira small { color: var(--texto-suave); font-size: 13px; }
+
+  section { padding: 56px 0; border-top: 1px solid var(--borda); }
+  section h2 {
+    font-size: clamp(22px, 3.4vw, 30px);
+    color: var(--texto-forte);
+    margin: 0 0 8px;
+    letter-spacing: -.3px;
+  }
+  section > .faixa > p.sub { color: var(--texto-suave); margin: 0 0 32px; max-width: 700px; }
+
+  .recurso {
+    display: grid;
+    grid-template-columns: 1fr 1.35fr;
+    gap: 34px;
+    align-items: center;
+    margin-bottom: 56px;
+  }
+  .recurso:nth-child(even) .texto { order: 2; }
+  .recurso h3 { color: var(--texto-forte); font-size: 20px; margin: 0 0 10px; }
+  .recurso p { margin: 0 0 10px; }
+  .recurso ul { margin: 12px 0 0; padding-left: 18px; color: var(--texto-suave); font-size: 14.5px; }
+  .recurso li { margin-bottom: 5px; }
+
+  figure { margin: 0; }
+  figure img {
+    width: 100%;
+    border-radius: 10px;
+    border: 1px solid var(--borda);
+    display: block;
+  }
+  figcaption { color: var(--texto-suave); font-size: 12.5px; margin-top: 8px; }
+
+  .cartoes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 16px;
+  }
+  .cartao {
+    background: var(--superficie);
+    border: 1px solid var(--borda);
+    border-radius: 10px;
+    padding: 20px;
+  }
+  .cartao h3 { color: var(--texto-forte); margin: 0 0 8px; font-size: 16.5px; }
+  .cartao p { margin: 0; font-size: 14.5px; color: var(--texto-suave); }
+
+  .preco {
+    background: var(--acento-suave);
+    border: 1px solid var(--acento);
+    border-radius: 12px;
+    padding: 28px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 24px;
+    align-items: center;
+  }
+  .preco b { color: var(--acento); font-size: 27px; display: block; }
+  .preco small { color: var(--texto-suave); font-size: 13.5px; }
+
+  footer {
+    border-top: 1px solid var(--borda);
+    padding: 40px 0 56px;
+    color: var(--texto-suave);
+    font-size: 14px;
+  }
+  footer .faixa { display: flex; gap: 20px; flex-wrap: wrap; align-items: center; }
+  footer a { margin-right: 16px; }
+
+  @media (max-width: 760px) {
+    .recurso { grid-template-columns: 1fr; gap: 18px; }
+    .recurso:nth-child(even) .texto { order: 0; }
+    .heroi { padding: 48px 0 36px; }
+    section { padding: 40px 0; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="faixa">
+    <div class="marca">
+      <div class="selo">S</div>
+      <div>
+        <b>SLT <span>GESTÃO</span></b>
+        <small>Smells Like Tech</small>
+      </div>
+    </div>
+    <a class="botao botao-neutro" href="#recursos">O que faz</a>
+    <a class="botao botao-zap" href="https://wa.me/5551986382043?text=Ol%C3%A1!%20Quero%20saber%20mais%20sobre%20o%20SLT%20Gest%C3%A3o."
+       target="_blank" rel="noopener">Falar no WhatsApp</a>
+  </div>
+</header>
+
+<div class="heroi">
+  <div class="faixa">
+    <h1>O sistema da <span>assistência técnica</span>,<br>feito por quem trabalha numa.</h1>
+    <p class="linha">
+      Ordem de serviço, cliente, produto e dinheiro no mesmo lugar. Funciona sem internet,
+      acompanha você no celular e entende o que você dita — inclusive o áudio que o cliente
+      manda no WhatsApp.
+    </p>
+    <p class="miudo">
+      Nasceu de uma planilha que não dava mais conta. Hoje roda todo dia numa assistência de
+      verdade, em Porto Alegre.
+    </p>
+
+    <div class="acoes">
+      <a class="botao botao-zap" href="https://wa.me/5551986382043?text=Ol%C3%A1!%20Quero%20uma%20demonstra%C3%A7%C3%A3o%20do%20SLT%20Gest%C3%A3o."
+         target="_blank" rel="noopener">Quero uma demonstração</a>
+      <a class="botao botao-principal" href="https://www.smellsliketech.com.br" target="_blank" rel="noopener">smellsliketech.com.br</a>
+    </div>
+
+    <div class="tira">
+      <div><b>Sem mensalidade obrigatória</b><small>licença anual ou vitalícia, você escolhe</small></div>
+      <div><b>Funciona offline</b><small>a internet caiu e o atendimento continua</small></div>
+      <div><b>PC + celular</b><small>os mesmos dados nos dois, sincronizados</small></div>
+      <div><b>Ditado no aparelho</b><small>o áudio não sai do seu computador</small></div>
+    </div>
+  </div>
+</div>
+
+<section id="recursos">
+  <div class="faixa">
+    <h2>O que ele faz no seu dia</h2>
+    <p class="sub">
+      As telas abaixo são do programa rodando. Os nomes e valores são inventados — nenhum
+      dado de cliente real aparece aqui.
+    </p>
+
+    <div class="recurso">
+      <div class="texto">
+        <h3>O retrato da oficina, ao abrir</h3>
+        <p>
+          Quanto entrou hoje, na semana e no mês. Quantos aparelhos estão na bancada. Quanto
+          há para receber. Cada número leva à lista que o formou — clicar em "esta semana"
+          abre exatamente as ordens daquela semana.
+        </p>
+        <ul>
+          <li>Busca única no topo: cliente, telefone, número da OS, IMEI, produto</li>
+          <li>Um clique na linha abre a ordem</li>
+        </ul>
+      </div>
+      <figure>
+        <img src="assets/01-painel.png" alt="Tela inicial do SLT Gestão com indicadores de faturamento e a lista de atendimentos em aberto" loading="lazy">
+      </figure>
+    </div>
+
+    <div class="recurso">
+      <div class="texto">
+        <h3>Ordens de serviço que se acham</h3>
+        <p>
+          Filtro por situação, ordenação por data, entrega, valor ou por quanto falta receber.
+          Orçamento e recibo saem em PDF com o seu logotipo, e o cliente recebe pelo WhatsApp
+          sem você sair do programa.
+        </p>
+        <ul>
+          <li>Garantia calculada a partir da entrega</li>
+          <li>Anotação interna que nunca sai impressa</li>
+        </ul>
+      </div>
+      <figure>
+        <img src="assets/02-ordens.png" alt="Lista de ordens de serviço com filtros, ordenação e colunas de valor, lucro e a receber" loading="lazy">
+      </figure>
+    </div>
+
+    <div class="recurso">
+      <div class="texto">
+        <h3>Para onde o negócio está indo</h3>
+        <p>
+          O mesmo dinheiro visto em sete distâncias — hoje, semana, mês, trimestre, semestre,
+          ano e desde o começo. O gráfico é de velas: verde quando o período faturou mais que
+          o anterior, vermelho quando faturou menos. A linha laranja é o lucro.
+        </p>
+        <ul>
+          <li>Projeção de 7, 15 e 30 dias, separando o que já está combinado do que é estimativa</li>
+          <li>Clientes que voltam, clientes que sumiram, serviços que mais rendem</li>
+        </ul>
+      </div>
+      <figure>
+        <img src="assets/03-evolucao.png" alt="Aba Evolução com panorama em sete janelas de tempo e gráfico de velas do faturamento" loading="lazy">
+      </figure>
+    </div>
+
+    <div class="recurso">
+      <div class="texto">
+        <h3>Clientes e histórico</h3>
+        <p>
+          Quantas vezes cada um voltou, quanto já gastou, quando foi a última vez. Telefone
+          repetido vira aviso de cadastro duplicado, e os dois podem ser unidos sem perder
+          histórico.
+        </p>
+      </div>
+      <figure>
+        <img src="assets/04-clientes.png" alt="Lista de clientes com número de atendimentos, total gasto e data do último serviço" loading="lazy">
+      </figure>
+    </div>
+
+    <div class="recurso">
+      <div class="texto">
+        <h3>Catálogo de peças com margem à vista</h3>
+        <p>
+          Preço de custo, preço de venda e fornecedor. Na hora de montar a OS, a peça entra
+          pelo catálogo e o lucro do atendimento aparece antes de você fechar o orçamento.
+        </p>
+      </div>
+      <figure>
+        <img src="assets/05-produtos.png" alt="Catálogo de produtos com custo, preço de venda e fornecedor" loading="lazy">
+      </figure>
+    </div>
+
+    <div class="recurso">
+      <div class="texto">
+        <h3>Quem paga em partes</h3>
+        <p>
+          Parcelamento e cobrança que se repete, no ritmo que você combinou: toda semana, a
+          cada duas, ou todo mês. Cada parcela tem data e um botão de "recebi" — e o
+          "a receber" passa a mostrar só o que falta entrar, com o vencimento mais próximo
+          na frente.
+        </p>
+      </div>
+      <figure>
+        <img src="assets/06-nova-os.png" alt="Tela de abertura de ordem de serviço com o bloco de cobrança programada" loading="lazy">
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="faixa">
+    <h2>O que o diferencia</h2>
+    <p class="sub">Três decisões que mudam o dia de quem atende balcão.</p>
+
+    <div class="cartoes">
+      <div class="cartao">
+        <h3>Seus dados são seus</h3>
+        <p>
+          O programa guarda tudo no seu computador e funciona sem internet. A nuvem é
+          opcional e serve para levar os mesmos dados ao celular — não para prender você a
+          uma mensalidade.
+        </p>
+      </div>
+      <div class="cartao">
+        <h3>Fala em vez de digitar</h3>
+        <p>
+          "Cria uma OS para o João, Moto G54, troca de tela, valor 320, pago no Pix" abre a
+          ordem completa. A transcrição roda no próprio aparelho: o áudio do seu cliente não
+          é enviado para servidor nenhum.
+        </p>
+      </div>
+      <div class="cartao">
+        <h3>Nada é gravado sem você ver</h3>
+        <p>
+          Antes de salvar, a tela mostra campo a campo o que entendeu. Quando há dois
+          clientes com o mesmo nome, ele pergunta em vez de escolher — nome errado no recibo
+          é problema seu, não do programa.
+        </p>
+      </div>
+      <div class="cartao">
+        <h3>No bolso também</h3>
+        <p>
+          Aplicativo Android com as mesmas ordens, clientes e produtos. Dá para dar baixa numa
+          parcela na porta da oficina e receber, pelo menu Compartilhar do WhatsApp, o áudio
+          ou a foto que o cliente mandou.
+        </p>
+      </div>
+      <div class="cartao">
+        <h3>Backup que você controla</h3>
+        <p>
+          Exportação completa em um arquivo, restauração em dois cliques. Sem depender de
+          ninguém para recuperar o seu histórico.
+        </p>
+      </div>
+      <div class="cartao">
+        <h3>Importa a sua planilha</h3>
+        <p>
+          Começa com o histórico que você já tem. A planilha continua funcionando enquanto
+          você ganha confiança no sistema.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="faixa">
+    <h2>Preço</h2>
+    <p class="sub">Uma licença por computador. Sem cobrança por ordem, por cliente ou por usuário.</p>
+
+    <div class="preco">
+      <div>
+        <b>R$ 149/ano</b>
+        <small>licença anual, renovável</small>
+      </div>
+      <div>
+        <b>R$ 989 uma vez</b>
+        <small>licença vitalícia para a máquina</small>
+      </div>
+      <div>
+        <a class="botao botao-zap" href="https://wa.me/5551986382043?text=Ol%C3%A1!%20Quero%20comprar%20o%20SLT%20Gest%C3%A3o."
+           target="_blank" rel="noopener">Falar comigo no WhatsApp</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="faixa">
+    <h2>Perguntas que sempre fazem</h2>
+
+    <div class="cartoes">
+      <div class="cartao">
+        <h3>Preciso de internet?</h3>
+        <p>Não. O programa é instalado no computador e funciona offline. A internet só é
+          necessária se você quiser usar o celular com os mesmos dados.</p>
+      </div>
+      <div class="cartao">
+        <h3>E se eu trocar de computador?</h3>
+        <p>O backup leva clientes, ordens, produtos e gastos. A licença é por máquina — fale
+          comigo e a gente resolve a transferência.</p>
+      </div>
+      <div class="cartao">
+        <h3>Funciona para que tipo de assistência?</h3>
+        <p>Celular, notebook, desktop, impressora, CFTV. Os tipos de equipamento e as
+          categorias de peça são livres — você cadastra os seus.</p>
+      </div>
+      <div class="cartao">
+        <h3>Dá para testar antes?</h3>
+        <p>Dá. Chame no WhatsApp que eu mostro o sistema rodando e tiro suas dúvidas.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="faixa">
+    <div>
+      <strong style="color:var(--texto-forte)">Smells Like Tech Informática</strong><br>
+      Porto Alegre · RS
+    </div>
+    <div style="margin-left:auto">
+      <a href="https://www.smellsliketech.com.br" target="_blank" rel="noopener">smellsliketech.com.br</a>
+      <a href="https://wa.me/5551986382043" target="_blank" rel="noopener">WhatsApp (51) 98638-2043</a>
+    </div>
+  </div>
+  <div class="faixa" style="margin-top:22px; font-size:12.5px;">
+    Esta é uma página de apresentação. O código-fonte do SLT Gestão não é público, e as telas
+    mostradas usam dados inventados.
+  </div>
+</footer>
+
+</body>
+</html>
